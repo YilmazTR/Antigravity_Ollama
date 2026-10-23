@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Antigravity & Ollama Installation Doctor</title>
+    <meta name="description" content="Diagnose, verify, and resolve issues for running Google Antigravity agents with local Ollama models on-device.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Top Navigation / Header -->
+        <header class="app-header">
+            <div class="brand">
+                <div class="brand-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <h1>Antigravity & Ollama Doctor</h1>
+                    <span class="badge badge-subtle">On-Device AI Diagnostic</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="btn-refresh" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M23 4v6h-6M1 20v-6h6"/>
+                        <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+                    </svg>
+                    Run Full Diagnostics
+                </button>
+            </div>
+        </header>
+
+        <!-- System Status Banner & Overview Metrics -->
+        <section class="overview-section">
+            <div class="status-summary-card" id="summary-card">
+                <div class="summary-status">
+                    <div class="status-indicator-dot" id="global-status-dot"></div>
+                    <div>
+                        <h2 id="global-status-title">Analyzing System...</h2>
+                        <p id="global-status-desc">Scanning system configuration, Ollama daemon, and Google Antigravity SDK.</p>
+                    </div>
+                </div>
+                <div class="metric-chips">
+                    <div class="metric-chip chip-pass">
+                        <span class="metric-value" id="count-passed">0</span>
+                        <span class="metric-label">Passed</span>
+                    </div>
+                    <div class="metric-chip chip-warn">
+                        <span class="metric-value" id="count-warn">0</span>
+                        <span class="metric-label">Warnings</span>
+                    </div>
+                    <div class="metric-chip chip-fail">
+                        <span class="metric-value" id="count-fail">0</span>
+                        <span class="metric-label">Failed</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hardware & System Quick Spec Bar -->
+            <div class="spec-grid">
+                <div class="spec-item">
+                    <span class="spec-label">Hardware & CPU</span>
+                    <span class="spec-value" id="spec-cpu">Detecting...</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Unified Memory (RAM)</span>
+                    <span class="spec-value" id="spec-ram">-- GB</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Hardware Acceleration</span>
+                    <span class="spec-value" id="spec-accel">--</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label">Python Environment</span>
+                    <span class="spec-value" id="spec-python">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Actionable Remediation Bar (Appears when fixes needed) -->
+        <section class="remediation-section" id="remediation-section" style="display: none;">
+            <div class="remediation-card">
+                <div class="remediation-header">
+                    <div class="alert-icon">⚠️</div>
+                    <div>
+                        <h3>Action Required: Issues Detected</h3>
+                        <p>The following issues prevent Google Antigravity from running with Ollama. Review each fix and click to execute with confirmation.</p>
+                    </div>
+                </div>
+                <div class="remediation-actions" id="remediation-actions-container">
+                    <!-- Dynamic Remediation Action Buttons -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Content Grid -->
+        <main class="dashboard-grid">
+            <!-- Left Column: Diagnostic Checks Checklist -->
+            <section class="card checklist-card">
+                <div class="card-header">
+                    <h3>Diagnostic Audit Checklist</h3>
+                    <span class="card-subhead">Aligned with Google Antigravity Local Model Specifications</span>
+                </div>
+                <div class="checklist-container" id="checklist-container">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Running comprehensive diagnostic suite...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Interactive Test Agent & Ollama Workbench -->
+            <div class="workbench-column">
+                <!-- Ollama Models Card -->
+                <section class="card models-card">
+                    <div class="card-header">
+                        <h3>Installed Ollama Models</h3>
+                        <button id="btn-pull-modal" class="btn btn-sm btn-ghost">+ Pull Model</button>
+                    </div>
+                    <div class="models-list" id="models-list">
+                        <span class="loading-text">Querying Ollama registry...</span>
+                    </div>
+                </section>
+
+                <!-- Interactive Test Agent Runner -->
+                <section class="card runner-card">
+                    <div class="card-header">
+                        <h3>Google Antigravity Agent Test Runner</h3>
+                        <span class="badge badge-success" id="engine-badge">LocalOpenAIAgentConfig</span>
+                    </div>
+                    <div class="runner-body">
+                        <div class="form-group">
+                            <label for="select-test-model">Select Target Model:</label>
+                            <select id="select-test-model" class="input-select">
+                                <option value="">Loading models...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-prompt">Test Prompt:</label>
+                            <textarea id="input-prompt" class="input-textarea" rows="2">Explain Python generators in one concise sentence.</textarea>
+                        </div>
+                        <div class="runner-controls">
+                            <button id="btn-run-test" class="btn btn-primary">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                Execute Agent Verification
+                            </button>
+                            <span class="hint-text">Calls agent using <code>.lightweight()</code> preset</span>
+                        </div>
+                        <!-- Agent Output Box -->
+                        <div class="output-container" id="output-container">
+                            <div class="output-header">
+                                <span>Agent Output:</span>
+                                <span class="output-status" id="output-status">Ready</span>
+                            </div>
+                            <div class="output-box" id="agent-output">Click "Execute Agent Verification" to test streaming responses from your local model.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Terminal / Diagnostic Logs -->
+                <section class="card logs-card">
+                    <div class="card-header">
+                        <h3>System & Doctor Logs</h3>
+                        <button id="btn-clear-logs" class="btn btn-sm btn-ghost">Clear</button>
+                    </div>
+                    <pre class="terminal-log" id="terminal-log">[System] Initializing Antigravity Doctor Web Dashboard...</pre>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Dialog for User Confirmation -->
+    <dialog class="confirmation-modal" id="confirmation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon" id="modal-icon">⚠️</div>
+                <h3 id="modal-title">Confirm Action</h3>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Are you sure you want to proceed with this system change?</p>
+                <div class="modal-command-box" id="modal-command-box" style="display: none;">
+                    <code></code>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="modal-btn-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modal-btn-confirm">Confirm & Execute</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Modal for Pulling a Model -->
+    <dialog class="confirmation-modal" id="pull-model-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">📥</div>
+                <h3>Pull Model into Ollama</h3>
+            </div>
+            <div class="modal-body">
+                <p>Enter the model tag to pull from the Ollama library. We recommend:</p>
+                <ul class="recommendation-list">
+                    <li><strong>gemma4:26b</strong> - Official Google Antigravity recommendation (high reasoning, 16.8 GB)</li>
+                    <li><strong>gemma2:9b</strong> - High performance lightweight model (5.4 GB)</li>
+                    <li><strong>llama3.2:3b</strong> - Ultra-fast lightweight model for fast iteration (2.0 GB)</li>
+                </ul>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label for="input-pull-model">Model Name:</label>
+                    <input type="text" id="input-pull-model" class="input-text" value="gemma4:26b" placeholder="e.g. gemma4:26b">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="modal-pull-cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" id="modal-pull-confirm">Pull Model</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="app.js"></script>
+</body>
+</html>
